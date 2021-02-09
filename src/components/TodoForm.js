@@ -41,7 +41,7 @@ export default class TodoForm extends Component {
                 />
                 <button>Submit</button>
             </form>
-            <button className="clear-btn" onClick={handleClear}>Clear List</button>
+            <button className="clear-btn" onClick={handleClear}>Clear Completed</button>
             </>
         )
     }

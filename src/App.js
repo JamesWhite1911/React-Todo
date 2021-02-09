@@ -4,43 +4,15 @@ import TodoList from './components/TodoList';
 import TodoForm from './components/TodoForm';
 
 
-const tasks = [
-  {
-    task: 'Organize Garage',
-    id: 1528817077286,
-    completed: false
-  },
-  {
-    task: 'Bake Cookies',
-    id: 1528817084358,
-    completed: false
-  }
-];
+const tasks = [];
 
 class App extends React.Component {
 
   constructor() {
     super();
     this.state = {
-      tasks: tasks,
-      id: "",
-      completed: false,
+      tasks: tasks
     }
-  }
-
-  //update state
-
-  updateState = () => {
-    const newTasks = this.state.tasks.map(task => {
-      //do a thing
-      return {
-        ...tasks,
-        task: task,
-      }
-    })
-    this.setState({
-      tasks: newTasks,
-    })
   }
 
   addTask = taskName => {
@@ -49,6 +21,7 @@ class App extends React.Component {
       id: this.state.tasks.length,
       completed: false,
     }
+
     const newTasks = [...this.state.tasks, task];
 
     this.setState({
@@ -57,12 +30,29 @@ class App extends React.Component {
   }
 
   handleClear = () => {
-    const newTasks = this.state.tasks.filter(item => {
-      return (item.completed);
-    });
-
+    const newTasks = this.state.tasks.filter(task => {
+      return(!task.completed);
+    })
     this.setState({
       tasks: newTasks
+    })
+  }
+
+  toggleItem = (clickedItemId) => {
+    this.setState({
+      tasks: this.state.tasks.map(item => {
+        if (item.id === clickedItemId) {
+          console.log(item.completed, item.id, clickedItemId)
+          return {
+            ...item,
+            completed: !item.completed
+          }
+        }
+        else {
+          console.log("false")
+          return item;
+        }
+      })
     })
   }
 
@@ -70,9 +60,9 @@ class App extends React.Component {
     return (
       <div className="App">
         <div className="header">
-          <TodoList tasks={this.state.tasks} addTask={this.addTask} />
+          <TodoList tasks={this.state.tasks} toggleItem={this.toggleItem} updateState={this.updateState}/>
         </div>
-        <TodoForm addTask={this.addTask} handleClear={this.handleClear}/>
+        <TodoForm addTask={this.addTask} handleClear={this.handleClear} toggleItem={this.toggleItem}/>
       </div>
     );
   }
